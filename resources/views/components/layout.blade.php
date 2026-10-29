@@ -23,6 +23,7 @@
             @elseif(auth()->user()->role === 'admin')
                 <a href="{{ route('polis.index') }}" class="btn-secondary">Manajemen Poli</a>
                 <a href="{{ route('dokter.index') }}" class="btn-secondary">Manajemen Dokter</a>
+                <a href="{{ route('pasien.index') }}" class="btn-secondary">Manajemen Pasien</a>
                 <a href="{{ route('obat.index') }}" class="btn-secondary">Manajemen Obat</a>
             @else
                 <a href="{{ route('jadwal-periksa.index') }}" class="btn-secondary">Jadwal Periksa</a>

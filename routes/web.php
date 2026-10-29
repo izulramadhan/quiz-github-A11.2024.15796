@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\Admin\ObatController;
+use App\Http\Controllers\Admin\PasienController;
 use App\Http\Controllers\Admin\PoliController as AdminPoliController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dokter\JadwalPeriksaController;
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function (): v
     Route::redirect('/dashboard', '/admin/obat')->name('admin.dashboard');
     Route::resource('polis', AdminPoliController::class)->except('show')->parameters(['polis' => 'poli']);
     Route::resource('dokter', DokterController::class)->except('show');
+    Route::resource('pasien', PasienController::class)->except('show');
     Route::resource('obat', ObatController::class)->except('show');
 });
 
