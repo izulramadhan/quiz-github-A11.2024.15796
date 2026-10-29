@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+
+@plugin 'daisyui' {
+    themes: light --default;
+    prefix: 'dui-';
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../../resources/views/**/*.blade.php';
+@source '../../resources/**/*.js';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer components {
+    .panel { @apply rounded-xl border border-slate-200 bg-white shadow-sm; }
+    .panel-heading { @apply flex items-center gap-3 border-b border-slate-100 px-6 py-5; }
+    .field-label { @apply mb-2 block text-xs font-semibold text-slate-600; }
+    .field { @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100; }
+    .btn-primary { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600; }
+    .btn-secondary { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700; }
+    .sidebar-link { @apply flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-indigo-200 transition hover:bg-white/10 hover:text-white; }
+    .sidebar-active { @apply bg-white/15 text-white ring-1 ring-white/20; }
+    .table-head { @apply bg-slate-50 px-6 py-3.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400; }
+    .table-cell { @apply border-t border-slate-100 px-6 py-5 align-middle; }
+    .badge-success { @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700; }
+    .badge-waiting { @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-amber-50 px-3 py-1.5 text-[11px] font-semibold text-amber-700; }
+    .queue-number { @apply inline-flex size-9 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600; }
+    .step-icon { @apply inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xs font-bold text-indigo-600; }
+}

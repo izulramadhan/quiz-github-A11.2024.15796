@@ -1,0 +1,64 @@
+x-app: &app
+  image: poliklinik-app:local
+  build:
+    context: .
+    target: app
+  env_file:
+    - .env
+  environment:
+    APP_ENV: production
+    APP_DEBUG: "false"
+    APP_KEY: ${APP_KEY:?Isi APP_KEY di .env dengan php artisan key:generate}
+    APP_URL: ${APP_URL:-http://localhost:8000}
+    DB_CONNECTION: ${DB_CONNECTION:-sqlite}
+    DB_HOST: ${DOCKER_DB_HOST:-${DB_HOST:-host.docker.internal}}
+    DB_DATABASE: ${DB_DATABASE:-/var/www/data/database.sqlite}
+    SESSION_DRIVER: database
+    CACHE_STORE: database
+    QUEUE_CONNECTION: database
+    LOG_CHANNEL: stderr
+    LOG_LEVEL: ${LOG_LEVEL:-info}
+  volumes:
+    - sqlite-data:/var/www/data
+    - app-storage:/var/www/html/storage
+  restart: unless-stopped
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  app:
+    <<: *app
+    ports:
+      - "${APP_PORT:-8000}:80"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/up') === false ? 1 : 0);"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  queue:
+    <<: *app
+    user: www-data
+    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--timeout=60", "--no-interaction"]
+    depends_on:
+      app:
+        condition: service_healthy
+    stop_signal: SIGTERM
+    stop_grace_period: 75s
+
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    profiles: [tools]
+    environment:
+      PMA_HOST: ${DOCKER_DB_HOST:-${DB_HOST:-host.docker.internal}}
+      PMA_PORT: ${DB_PORT:-3306}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:${PHPMYADMIN_PORT:-8082}:80"
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
+  app-storage:
