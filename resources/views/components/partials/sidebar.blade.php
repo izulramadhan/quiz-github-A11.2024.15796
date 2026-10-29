@@ -5,6 +5,7 @@
             <a href="{{ route('pasien.daftar') }}" @class(['sidebar-link', 'sidebar-active' => request()->routeIs('pasien.daftar')])><span aria-hidden="true" class="text-lg">⊕</span> Pendaftaran Periksa</a>
         @elseif(auth()->user()->role === 'admin')
             <a href="{{ route('polis.index') }}" @class(['sidebar-link', 'sidebar-active' => request()->routeIs('polis.*')])><span aria-hidden="true" class="text-lg">⊕</span> Manajemen Poli</a>
+            <a href="{{ route('dokter.index') }}" @class(['sidebar-link', 'sidebar-active' => request()->routeIs('dokter.*')])><span aria-hidden="true" class="text-lg">✚</span> Manajemen Dokter</a>
             <a href="{{ route('obat.index') }}" @class(['sidebar-link', 'sidebar-active' => request()->routeIs('obat.*')])><span aria-hidden="true" class="text-lg">⊞</span> Manajemen Obat</a>
         @else
             <a href="{{ route('jadwal-periksa.index') }}" @class(['sidebar-link', 'sidebar-active' => request()->routeIs('jadwal-periksa.*')])><span aria-hidden="true" class="text-lg">▦</span> Jadwal Periksa</a>

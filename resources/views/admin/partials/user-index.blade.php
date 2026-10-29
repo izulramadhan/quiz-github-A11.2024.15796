@@ -1,0 +1,14 @@
+<x-layout :title="'Daftar '.ucfirst($role)" :subtitle="'Kelola data dan akun '. $role .' poliklinik.'">
+    <section class="panel">
+        <div class="panel-heading justify-between"><div><h2 class="font-semibold">Manajemen {{ ucfirst($role) }}</h2><p class="mt-1 text-xs text-slate-500">{{ $users->total() }} {{ $role }} terdaftar.</p></div><a href="{{ route($role.'.create') }}" class="btn-primary">+ Tambah {{ ucfirst($role) }}</a></div>
+        <div class="overflow-x-auto"><table class="w-full text-left text-sm">
+            <thead><tr><th class="table-head">{{ $role === 'pasien' ? 'No. RM / Nama' : 'Nama dokter' }}</th><th class="table-head">Kontak</th><th class="table-head">NIK / Alamat</th>@if($role === 'dokter')<th class="table-head">Poli</th>@endif<th class="table-head text-right">Aksi</th></tr></thead>
+            <tbody>@forelse($users as $user)
+                @php($hasRelations = $role === 'dokter' ? $user->jadwal_periksas_count > 0 : $user->daftar_polis_count > 0)
+                <tr><td class="table-cell"><p class="font-semibold">{{ $user->nama }}</p><p class="mt-1 text-xs text-slate-400">{{ $role === 'pasien' ? ($user->no_rm ?: 'Belum ada nomor RM') : '#'.$user->id }}</p></td><td class="table-cell"><p>{{ $user->email }}</p><p class="mt-1 text-xs text-slate-400">{{ $user->no_hp ?: '—' }}</p></td><td class="table-cell max-w-xs"><p class="text-xs text-slate-500">{{ $user->no_ktp ?: '—' }}</p><p class="mt-1 text-xs text-slate-400">{{ $user->alamat ?: '—' }}</p></td>@if($role === 'dokter')<td class="table-cell"><span class="badge-success">{{ $user->poli?->nama_poli ?: 'Belum ditentukan' }}</span></td>@endif<td class="table-cell"><div class="flex justify-end gap-2"><a href="{{ route($role.'.edit', $user) }}" class="btn-secondary">Edit</a><form method="POST" action="{{ route($role.'.destroy', $user) }}" data-confirm="Hapus akun {{ $role }} ini?">@csrf @method('DELETE')<button type="submit" @disabled($hasRelations) title="{{ $hasRelations ? 'Data masih memiliki jadwal atau pendaftaran periksa.' : 'Hapus akun' }}" class="btn-secondary border-red-100 text-red-600 disabled:cursor-not-allowed disabled:opacity-40">Hapus</button></form></div></td></tr>
+            @empty<tr><td colspan="{{ $role === 'dokter' ? 5 : 4 }}" class="p-12 text-center text-slate-400">Belum ada data {{ $role }}. Klik Tambah {{ ucfirst($role) }} untuk memulai.</td></tr>@endforelse</tbody>
+        </table></div>
+        @if($users->hasPages())<div class="border-t border-slate-100 p-5">{{ $users->links() }}</div>@endif
+    </section>
+    <p class="mt-4 text-xs text-slate-400">{{ $role === 'dokter' ? 'Dokter yang masih memiliki jadwal periksa tetap disimpan untuk menjaga pelayanan dan riwayat pasien.' : 'Pasien yang sudah memiliki pendaftaran atau riwayat pemeriksaan tetap disimpan.' }}</p>
+</x-layout>

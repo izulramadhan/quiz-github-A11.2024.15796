@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\Admin\ObatController;
 use App\Http\Controllers\Admin\PoliController as AdminPoliController;
 use App\Http\Controllers\AuthController;
@@ -27,6 +28,7 @@ Route::get('/dashboard', fn (Request $request) => redirect()->route(match ($requ
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function (): void {
     Route::redirect('/dashboard', '/admin/obat')->name('admin.dashboard');
     Route::resource('polis', AdminPoliController::class)->except('show')->parameters(['polis' => 'poli']);
+    Route::resource('dokter', DokterController::class)->except('show');
     Route::resource('obat', ObatController::class)->except('show');
 });
 
