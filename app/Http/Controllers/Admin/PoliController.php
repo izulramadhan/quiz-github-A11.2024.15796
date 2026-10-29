@@ -58,10 +58,11 @@ class PoliController extends Controller
     private function validatedData(Request $request): array
     {
         return $request->validate([
-            'nama_poli' => ['required', 'string', 'max:255'],
+            'nama_poli' => ['required', 'string', 'max:25'],
             'keterangan' => ['nullable', 'string', 'max:255'],
         ], [
             'nama_poli.required' => 'Nama poli wajib diisi.',
+            'nama_poli.max' => 'Nama poli maksimal 25 karakter.',
             'max' => ':attribute maksimal 255 karakter.',
         ], ['nama_poli' => 'Nama poli', 'keterangan' => 'Keterangan']);
     }
